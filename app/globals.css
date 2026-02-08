@@ -24,3 +24,44 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@keyframes heart-float {
+  0% {
+    transform: translateY(0) scale(0.8);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-120vh) scale(1.2);
+    opacity: 0;
+  }
+}
+
+.animate-heart-float {
+  animation-name: heart-float;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* Envelope flap */
+.clip-envelope-flap {
+  clip-path: polygon(0 0, 50% 60%, 100% 0, 100% 50%, 0 50%);
+}
+
+/* Card pop animation */
+@keyframes card-pop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-card-pop {
+  animation: card-pop 0.5s ease-out forwards;
+}

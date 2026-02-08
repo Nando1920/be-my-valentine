@@ -1,65 +1,125 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useState, useMemo } from "react";
+import confetti from "canvas-confetti";
+
+type Heart = {
+  left: string;
+  delay: string;
+  duration: string;
+  size: string;
+};
+
+export default function ValentinePage() {
+  const [opened, setOpened] = useState(false);
+  const [yes, setYes] = useState(false);
+  const [noStyle, setNoStyle] = useState({ top: "55%", left: "60%" });
+
+  // Hearts generated ONCE
+  const hearts = useMemo<Heart[]>(() => {
+    return Array.from({ length: 30 }).map(() => ({
+      left: `${Math.random() * 100}%`,
+      delay: `${Math.random() * 5}s`,
+      duration: `${6 + Math.random() * 6}s`,
+      size: `${16 + Math.random() * 20}px`,
+    }));
+  }, []);
+
+  const moveNo = () => {
+    setNoStyle({
+      top: `${20 + Math.random() * 60}%`,
+      left: `${20 + Math.random() * 60}%`,
+    });
+  };
+
+  const handleYes = () => {
+    setYes(true);
+    confetti({
+      particleCount: 200,
+      spread: 100,
+      origin: { y: 0.6 },
+    });
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="relative w-screen h-screen bg-pink-400 overflow-hidden flex items-center justify-center px-4">
+      {/* ✉️ ENVELOPE */}
+      {!opened && (
+        <button
+          onClick={() => setOpened(true)}
+          className="relative w-64 h-40 bg-red-500 rounded-lg shadow-xl cursor-pointer transition hover:scale-105"
+        >
+          {/* flap */}
+          <div className="absolute top-0 left-0 w-full h-full bg-red-600 clip-envelope-flap" />
+
+          {/* heart seal */}
+          <div className="absolute inset-0 flex items-center justify-center text-4xl">
+            💖
+          </div>
+
+          <p className="absolute bottom-2 w-full text-center text-white text-sm">
+            Click to open
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+        </button>
+      )}
+
+      {/* 💌 CARD */}
+      {opened && (
+        <>
+          {/* Flying Hearts */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {hearts.map((heart, i) => (
+              <span
+                key={i}
+                className="absolute bottom-[-10%] animate-heart-float"
+                style={{
+                  left: heart.left,
+                  animationDelay: heart.delay,
+                  animationDuration: heart.duration,
+                  fontSize: heart.size,
+                }}
+              >
+                ❤️
+              </span>
+            ))}
+          </div>
+
+          {/* Card */}
+          <div className="relative z-10 bg-white/90 backdrop-blur rounded-2xl shadow-2xl p-10 text-center max-w-lg w-full animate-card-pop">
+            {!yes ? (
+              <>
+                <h1 className="text-3xl md:text-4xl font-bold text-pink-600 mb-8">
+                  Paulina, will you be my Valentine? 💘
+                </h1>
+
+                <div className="relative h-32 flex justify-center items-center">
+                  <button
+                    onClick={handleYes}
+                    className="bg-red-500 text-white px-6 py-3 rounded-xl text-lg shadow-lg hover:scale-110 transition"
+                  >
+                    Yes 💖
+                  </button>
+
+                  <button
+                    onMouseEnter={moveNo}
+                    onClick={moveNo}
+                    className="absolute bg-gray-200 text-gray-700 px-6 py-3 rounded-xl text-lg transition-all"
+                    style={noStyle}
+                  >
+                    No 💔
+                  </button>
+                </div>
+              </>
+            ) : (
+              <h2 className="text-3xl md:text-4xl font-bold text-pink-600">
+                Happy Valentine's!!! 🥰💞
+                <br />
+                It will be the best one ever 💘
+              </h2>
+            )}
+          </div>
+        </>
+      )}
+    </main>
   );
 }
