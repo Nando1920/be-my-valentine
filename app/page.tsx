@@ -13,7 +13,11 @@ type Heart = {
 export default function ValentinePage() {
   const [opened, setOpened] = useState(false);
   const [yes, setYes] = useState(false);
-  const [noStyle, setNoStyle] = useState({ top: "55%", left: "60%" });
+  const [noStyle, setNoStyle] = useState({
+    top: "60%",
+    left: "50%",
+    transform: "translateX(-50%)",
+  });
 
   // Hearts generated ONCE
   const hearts = useMemo<Heart[]>(() => {
@@ -92,7 +96,7 @@ export default function ValentinePage() {
                   Paulina, will you be my Valentine? 💘
                 </h1>
 
-                <div className="relative h-32 flex justify-center items-center">
+                <div className="relative h-32 flex justify-center items-start">
                   <button
                     onClick={handleYes}
                     className="bg-red-500 text-white px-6 py-3 rounded-xl text-lg shadow-lg hover:scale-110 transition"
