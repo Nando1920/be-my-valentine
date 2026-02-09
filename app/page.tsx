@@ -97,7 +97,7 @@ export default function ValentinePage() {
           </div>
 
           {/* Card */}
-          <div className="relative z-10 bg-white/90 backdrop-blur rounded-2xl shadow-2xl p-10 text-center max-w-lg w-full animate-card-pop">
+          <div className="relative z-10 bg-white/40 backdrop-blur rounded-2xl shadow-2xl p-10 text-center max-w-lg w-full animate-card-pop">
             {!yes ? (
               <>
                 <h1 className="text-3xl md:text-4xl font-bold text-pink-600 mb-8">
