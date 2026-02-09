@@ -33,6 +33,7 @@ export default function ValentinePage() {
     setNoStyle({
       top: `${20 + Math.random() * 60}%`,
       left: `${20 + Math.random() * 60}%`,
+      transform: "translate(-50%, -50%)", // keep it centered like before
     });
   };
 
@@ -51,7 +52,8 @@ export default function ValentinePage() {
       {!opened && (
         <button
           onClick={() => setOpened(true)}
-          className="relative w-64 h-40 bg-red-500 rounded-lg shadow-xl cursor-pointer transition hover:scale-105"
+          className="relative w-64 h-40 bg-red-500 rounded-lg shadow-xl cursor-pointer transition hover:scale-105 animate-bounce-beat"
+          style={{ animation: "bounce-beat 1s infinite" }}
         >
           {/* flap */}
           <div className="absolute top-0 left-0 w-full h-full bg-red-600 clip-envelope-flap" />

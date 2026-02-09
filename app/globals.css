@@ -65,3 +65,19 @@ body {
 .animate-card-pop {
   animation: card-pop 0.5s ease-out forwards;
 }
+
+@keyframes bounce-beat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.05);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  75% {
+    transform: scale(1.03);
+  }
+}
