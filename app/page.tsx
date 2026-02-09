@@ -18,6 +18,9 @@ export default function ValentinePage() {
     left: "50%",
     transform: "translateX(-50%)",
   });
+  const noTexts = ["No 💔", "Wait—", "Hey!", "Stop 😭", "Okay fine…"];
+  const [noTextIndex, setNoTextIndex] = useState(0);
+  const [yesScale, setYesScale] = useState(1);
 
   // Hearts generated ONCE
   const hearts = useMemo<Heart[]>(() => {
@@ -33,8 +36,11 @@ export default function ValentinePage() {
     setNoStyle({
       top: `${20 + Math.random() * 60}%`,
       left: `${20 + Math.random() * 60}%`,
-      transform: "translate(-50%, -50%)", // keep it centered like before
+      transform: "translate(-50%, -50%)",
     });
+
+    setNoTextIndex((i) => (i + 1) % noTexts.length);
+    setYesScale((s) => Math.min(s + 0.08, 1.6)); // grows but caps
   };
 
   const handleYes = () => {
@@ -47,7 +53,7 @@ export default function ValentinePage() {
   };
 
   return (
-    <main className="relative w-screen h-screen bg-pink-400 overflow-hidden flex items-center justify-center px-4">
+    <main className="relative w-screen h-screen overflow-hidden flex items-center justify-center px-4 bg-gradient-to-br from-pink-400 via-rose-400 to-pink-500 animate-gradient">
       {/* ✉️ ENVELOPE */}
       {!opened && (
         <button
@@ -101,7 +107,8 @@ export default function ValentinePage() {
                 <div className="relative h-32 flex justify-center items-start">
                   <button
                     onClick={handleYes}
-                    className="bg-red-500 text-white px-6 py-3 rounded-xl text-lg shadow-lg hover:scale-110 transition"
+                    className="bg-red-500 text-white px-6 py-3 rounded-xl text-lg shadow-lg transition-transform duration-300 hover:scale-110"
+                    style={{ transform: `scale(${yesScale})` }}
                   >
                     Yes 💖
                   </button>
@@ -109,10 +116,10 @@ export default function ValentinePage() {
                   <button
                     onMouseEnter={moveNo}
                     onClick={moveNo}
-                    className="absolute bg-gray-200 text-gray-700 px-6 py-3 rounded-xl text-lg transition-all"
+                    className="absolute bg-gray-200 text-gray-700 px-6 py-3 rounded-xl text-lg transition-all duration-300"
                     style={noStyle}
                   >
-                    No 💔
+                    {noTexts[noTextIndex]}
                   </button>
                 </div>
               </>
